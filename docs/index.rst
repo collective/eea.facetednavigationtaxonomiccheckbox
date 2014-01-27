@@ -55,8 +55,8 @@ Documentation
 ================================================
 See the documentation at:
 
-- http://eeafacetednavigationwidgetstaxonomiccheckbox.readthedocs.org/en/latest/
-- http://pythonhosted.org/eea.facetednavigation.widgets.taxonomiccheckbox/
+- http://eeafacetednavigationtaxonomiccheckbox.readthedocs.org/en/latest/
+- http://pythonhosted.org/eea.facetednavigationtaxonomiccheckbox/
 
 Support
 ================================================
