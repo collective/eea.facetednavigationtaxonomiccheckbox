@@ -1,0 +1,38 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:faceted="http://namespaces.zope.org/faceted"
+  i18n_domain="eea">
+
+  <genericsetup:registerProfile
+        name="default"
+        title="Taxonomic Checkbox widget for EEA Faceted Navigation"
+        directory="profiles/default"
+        description="Taxonomic Checkbox widget for EEA Faceted Navigation"
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+    />
+
+  <faceted:widget factory=".widget.Widget" />
+
+  <browser:resource
+    name="eea.facetednavigation.widgets.taxonomiccheckbox.view.js"
+    file="./view.js"
+   />
+
+  <browser:resource
+    name="eea.facetednavigation.widgets.taxonomiccheckbox.edit.js"
+    file="./edit.js"
+   />
+
+  <browser:resource
+    name="eea.facetednavigation.widgets.taxonomiccheckbox.view.css"
+    file="./view.css"
+   />
+
+  <browser:resource
+    name="eea.facetednavigation.widgets.taxonomiccheckbox.edit.css"
+    file="./edit.css"
+   />
+
+</configure>

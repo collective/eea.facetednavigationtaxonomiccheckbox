@@ -1,0 +1,12 @@
+include CHANGES.txt
+include CONTRIBUTORS.txt
+include README.rst
+include TODOS.rst
+recursive-include src *.zcml, *.pot, *.po, *.css, *.js, *.xml, *.txt, *.cpt, *.pt, *.metadata, *.zpt, *.sh
+recursive-include src/eea/facetednavigationtaxonomiccheckbox/profiles/default *
+include src/eea/facetednavigationtaxonomiccheckbox/configure.zcml
+include src/eea/facetednavigationtaxonomiccheckbox/edit.css
+include src/eea/facetednavigationtaxonomiccheckbox/edit.js
+include src/eea/facetednavigationtaxonomiccheckbox/view.css
+include src/eea/facetednavigationtaxonomiccheckbox/view.js
+include src/eea/facetednavigationtaxonomiccheckbox/widget.pt
