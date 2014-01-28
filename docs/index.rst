@@ -29,6 +29,9 @@ For installation and configuration of `eea.facetednavigation` refer to the offic
 In order to use the `taxonomiccheckbox` widget, in your "Faceted criteria" setup add the
 `taxonomiccheckbox` widget with "Tags" as a "Catalog index". Your tags would be then nicely nested.
 
+.. image:: _static/02_add_widget.png
+    :align: center
+
 This is what you would get finally.
 
 .. image:: _static/01_taxonomic_tags_example.png
