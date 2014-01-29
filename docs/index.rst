@@ -26,7 +26,7 @@ Integration with your Plone site
 ------------------------------------------------
 For installation and configuration of `eea.facetednavigation` refer to the official documentation.
 
-In order to use the `taxonomiccheckbox` widget, in your "Faceted criteria" setup add the
+In order to use the `Taxonomic Checkboxes` widget, in your "Faceted criteria" setup add the
 `taxonomiccheckbox` widget with "Tags" as a "Catalog index". Your tags would be then nicely nested.
 
 .. image:: _static/02_add_widget.png

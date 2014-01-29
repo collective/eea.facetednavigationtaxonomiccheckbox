@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '0.1'
+version = '0.1.1'
 
 try:
     readme = open('README.rst').read()
@@ -54,7 +54,7 @@ setup(
         'setuptools',
         # -*- Extra requirements: -*-
         'redomino.advancedkeyword>=1.4',
-        'eea.facetednavigation>=6.6',
+        'eea.facetednavigation>=6.7',
     ],
     extras_require = {'test': ['plone.api', 'plone.app.testing', 'robotsuite', 'Products.PloneTestCase',]},
     entry_points = """
