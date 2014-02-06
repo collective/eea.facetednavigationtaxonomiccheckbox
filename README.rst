@@ -71,7 +71,7 @@ GPL 2.0
 
 Authors & copyright
 ================================================
-Copyright (C) 2014 Goldmund, Wyldebeast & Wunderliebe.
+Copyright (C) 2014 `Goldmund, Wyldebeast & Wunderliebe <http://www.goldmund-wyldebeast-wunderliebe.com/>`_.
 
 Authors listed in alphabetic order (by name):
 
