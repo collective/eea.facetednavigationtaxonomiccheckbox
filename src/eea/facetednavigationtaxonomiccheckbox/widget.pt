@@ -35,7 +35,8 @@
 
   <ul>
     <tal:items repeat="term python:view.vocabulary()">
-      <li tal:define="
+      <li tal:condition="python:view.allowed(term_id)"
+          tal:define="
         term_id python:term[0];
         term_label python:term[1];
         term_label python:view.translate(term_label);

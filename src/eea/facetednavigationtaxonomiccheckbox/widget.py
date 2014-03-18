@@ -85,6 +85,15 @@ EditSchema = Schema((
             description=_(u"Sort options reversed"),
         )
     ),
+    LinesField('whitelist',
+        schemata="display",
+        widget=LinesWidget(
+            label=_(u'White list tags'),
+            description=_(u'Only show specific tags (one per line). Partial tags can be '
+                u'entered and are matched if the found tag startswith the partial. Leave empty to show all tags.'),
+            i18n_domain="eea"
+        )
+    ),
     LinesField('default',
         schemata="default",
         widget=LinesWidget(
@@ -198,3 +207,13 @@ class Widget(CountableWidget):
             'margin-left: {0}px'.format(indent * factor)
         ]
         return ';'.join(style_attrs)
+
+    def allowed(self, term):
+        allowed = self.data.get('whitelist')
+
+        if not allowed:
+            return True
+
+        for item in allowed:
+            if term.startswith(item):
+                return True
