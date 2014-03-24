@@ -211,9 +211,10 @@ class Widget(CountableWidget):
     def allowed(self, term):
         allowed = self.data.get('whitelist')
 
-        if not allowed:
-            return True
-
-        for item in allowed:
-            if term.startswith(item):
+        if term:
+            if not allowed:
                 return True
+
+            for item in allowed:
+                if term.startswith(item):
+                    return True
