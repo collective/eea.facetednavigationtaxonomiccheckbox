@@ -1,7 +1,7 @@
 .faceted-checkbox-item-disabled {
   color: gray;
 }
-
+.faceted-zero-count-hidden .faceted-taxonomic-checkbox-item-zerocount,
 .faceted-zero-count-hidden .faceted-checkbox-item-disabled {
   display: none ! important;
 }
