@@ -201,10 +201,7 @@ class Widget(CountableWidget):
         return "indent-{0}".format(len(string.split('.')) - 1)
 
     def taxonomic_html_style(self, string):
-        factor = 20
-        indent = len(string.split('.')) - 1
         style_attrs = [
-            'margin-left: {0}px'.format(indent * factor)
         ]
         return ';'.join(style_attrs)
 
