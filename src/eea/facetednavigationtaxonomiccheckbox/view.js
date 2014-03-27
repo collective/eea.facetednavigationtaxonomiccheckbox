@@ -91,7 +91,20 @@ Faceted.TaxonomicCheckboxesWidget = function(wid){
 };
 
 Faceted.TaxonomicCheckboxesWidget.prototype = {
+  //Recurcisvly mark parents as checked if element is checked
+  checkbox_parents_click : function(element){
+    if($(element).attr('checked')){
+      var parent_name = $(element).parent().attr('parent');
+      var parent = $("input[value='"+parent_name+"']");
+      if(parent.length > 0){
+        parent.attr('checked',true);
+        this.checkbox_parents_click(parent);
+      }
+    }
+
+  },
   checkbox_click: function(element, evt){
+    this.checkbox_parents_click(element);
     this.do_query(element);
   },
 
