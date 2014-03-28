@@ -1,0 +1,32 @@
+<ul tal:define='vocabulary options/item' tal:condition='python:vocabulary.keys()'>
+    <tal:items repeat="term python:vocabulary.keys()">
+        <li tal:condition="python:view.allowed(term_id)"
+            tal:define="wid python:view.data.getId();
+                        term_id term;
+                        term_label term;
+                        term_label python:view.translate(term_label);
+                        term_parent python:view.taxonomic_parent(term_id);
+                        term_html_class python:view.taxonomic_html_class(term_id);
+                        term_html_style python:view.taxonomic_html_style(term_id);
+                        wbr_term_label python:view.word_break(term_label);
+                        wbr_term_label python:view.taxonomic_label(term_label);
+                        chbox_id string:${wid}_${term_id};
+                        chbox_id python:view.cleanup(chbox_id);
+                        option_id string:${wid}_option_${term_id};"
+                        tal:attributes="id option_id; 
+                        class term_html_class; 
+                        parent term_parent; 
+                        style term_html_style">
+            <input type="checkbox" class="faceted-noborder" 
+                tal:attributes="checked python:view.selected(term_id);
+                                name string:${wid};
+                                id chbox_id;
+                                title term_label;
+                                value term_id;" />
+            <label tal:attributes="for chbox_id; 
+                                    title term_label"
+                tal:content="structure wbr_term_label">term label</label>
+            <div tal:replace='structure python: view.render_partial(vocabulary.get(term))' ></div>
+        </li>
+    </tal:items>
+</ul>

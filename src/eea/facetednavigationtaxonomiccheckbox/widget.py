@@ -11,13 +11,19 @@ from Products.Archetypes.public import LinesWidget
 from Products.Archetypes.public import SelectionWidget
 from Products.Archetypes.public import BooleanWidget
 from Products.Archetypes.utils import DisplayList
-
+from Products.Archetypes.utils import OrderedDict
+from Products.CMFCore.utils import getToolByName
 from eea.facetednavigation.dexterity_support import normalize as atdx_normalize
 from eea.facetednavigation.widgets import ViewPageTemplateFile
 from eea.faceted.vocabularies.utils import compare
 from eea.facetednavigation.widgets.widget import CountableWidget
 from eea.facetednavigation import EEAMessageFactory as _
-
+from zope.component import queryUtility
+from eea.facetednavigation.interfaces import IFacetedCatalog
+from pprint import pprint
+from BTrees.IIBTree import weightedIntersection, IISet
+import logging
+logger = logging.getLogger('eea.facetednavigationtaxonomiccheckbox')
 
 EditSchema = Schema((
     StringField('index',
@@ -118,6 +124,30 @@ class Widget(CountableWidget):
     index = ViewPageTemplateFile('widget.pt')
     edit_schema = CountableWidget.edit_schema.copy() + EditSchema
 
+    def vocabulary(self, **kwargs):
+        """ Return data vocabulary
+        """
+        vocab = super(Widget, self).vocabulary(**kwargs)
+        
+        nest_vocab = OrderedDict()
+        for item in vocab:
+            key, value = item
+            parts = value.split(".")
+            master = nest_vocab
+            for index,part in enumerate(parts):
+                name = ".".join(parts[:index]+[part,])
+                if not name in master:
+                  master[name] = OrderedDict()
+                  # master[name]['value'] = value
+                master = master.get(name)
+
+        return nest_vocab
+
+    def render_partial(self, nested_dict):
+        template = ViewPageTemplateFile('partial.pt')
+        return template(self, item=nested_dict)
+
+
     @property
     def default(self):
         """ Get default values
@@ -198,7 +228,9 @@ class Widget(CountableWidget):
         """
         Gets taxonomic HTML class.
         """
-        return "indent-{0}".format(len(string.split('.')) - 1)
+        if len(string.split('.')) > 1:
+            return "indent-1"
+        return "indent-0"
 
     def taxonomic_html_style(self, string):
         style_attrs = [
@@ -215,3 +247,53 @@ class Widget(CountableWidget):
             for item in allowed:
                 if term.startswith(item):
                     return True
+
+    def _recursive_keys(self, thedict={}, sequence=[]):
+        """Since we made nested dicts, we recusrively need to collect keys"""
+        for key, item in thedict.items():
+            sequence.append(key)
+            sequence = self._recursive_keys(item, sequence)
+
+        return sequence
+
+
+    def count(self, brains, sequence=None):
+        """ Intersect results
+        """
+        res = {}
+        sequence = []
+        if not sequence:
+            sequence = self._recursive_keys(self.vocabulary())
+
+        if not sequence:
+            return res
+
+        index_id = self.data.get('index')
+        if not index_id:
+            return res
+
+        ctool = getToolByName(self.context, 'portal_catalog')
+        index = ctool._catalog.getIndex(index_id)
+        ctool = queryUtility(IFacetedCatalog)
+        if not ctool:
+            return res
+
+        brains = IISet(brain.getRID() for brain in brains)
+        res[""] = res['all'] = len(brains)
+        for value in sequence:
+            if not value:
+                res[value] = len(brains)
+                continue
+            normalized_value = atdx_normalize(value)
+            rset = ctool.apply_index(self.context, index, normalized_value)[0]
+            rset = IISet(rset)
+            rset = weightedIntersection(brains, rset)[1]
+            if isinstance(value, unicode):
+                res[value] = len(rset)
+            elif isinstance(normalized_value, unicode):
+                res[normalized_value] = len(rset)
+            else:
+                unicode_value = value.decode('utf-8')
+                res[unicode_value] = len(rset)
+                
+        return res
