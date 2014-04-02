@@ -72,14 +72,6 @@ Faceted.TaxonomicCheckboxesWidget = function(wid){
       });
     });
 
-    // jQuery("ul > li > ul > li > ul", this.fieldset).each(function(){
-    //   $(this).collapsible({
-    //     maxitems: 2,
-    //     elements: ' > li:not(.faceted-taxonomic-checkbox-item-zerocount)'
-    //   });
-    // });
-  // }
-
   // Bind events
   jQuery(Faceted.Events).bind(Faceted.Events.QUERY_CHANGED, function(evt){
     self.synchronize();
@@ -336,7 +328,8 @@ Faceted.TaxonomicCheckboxesWidget.prototype = {
     //   jQuery('ul', context.widget).append(lis);
     // }
     // Update expand/colapse
-    context.fieldset.trigger('widget-refresh');
+    // context.fieldset.trigger('widget-refresh');
+    jQuery("ul", context.fieldset).trigger('widget-refresh');
   }
 };
 
