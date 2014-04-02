@@ -3,7 +3,10 @@
   xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
   xmlns:browser="http://namespaces.zope.org/browser"
   xmlns:faceted="http://namespaces.zope.org/faceted"
+  xmlns:i18n="http://namespaces.zope.org/i18n"
   i18n_domain="eea">
+
+  <i18n:registerTranslations directory="locales" />
 
   <genericsetup:registerProfile
         name="default"
@@ -17,22 +20,22 @@
 
   <browser:resource
     name="eea.facetednavigation.widgets.taxonomiccheckbox.view.js"
-    file="./view.js"
+    file="./static/js/view.js"
    />
 
   <browser:resource
     name="eea.facetednavigation.widgets.taxonomiccheckbox.edit.js"
-    file="./edit.js"
+    file="./static/js/edit.js"
    />
 
   <browser:resource
     name="eea.facetednavigation.widgets.taxonomiccheckbox.view.css"
-    file="./view.css"
+    file="./static/css/view.css"
    />
 
   <browser:resource
     name="eea.facetednavigation.widgets.taxonomiccheckbox.edit.css"
-    file="./edit.css"
+    file="./static/css/edit.css"
    />
 
 </configure>

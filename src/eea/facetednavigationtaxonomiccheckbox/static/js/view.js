@@ -62,12 +62,23 @@ Faceted.TaxonomicCheckboxesWidget = function(wid){
   }
 
   // Handle More/Less buttons click
-  if(this.maxitems){
-    this.fieldset.collapsible({
-      maxitems: this.maxitems,
-      elements: 'li:not(.faceted-taxonomic-checkbox-item-zerocount)'
+  // if(this.maxitems){
+
+    jQuery("ul", this.fieldset).each(function(){
+      var max = $(this).attr('data-max');
+      $(this).collapsible({
+        maxitems: max,
+        elements: ' > li:not(.faceted-taxonomic-checkbox-item-zerocount)'
+      });
     });
-  }
+
+    // jQuery("ul > li > ul > li > ul", this.fieldset).each(function(){
+    //   $(this).collapsible({
+    //     maxitems: 2,
+    //     elements: ' > li:not(.faceted-taxonomic-checkbox-item-zerocount)'
+    //   });
+    // });
+  // }
 
   // Bind events
   jQuery(Faceted.Events).bind(Faceted.Events.QUERY_CHANGED, function(evt){
@@ -285,11 +296,11 @@ Faceted.TaxonomicCheckboxesWidget.prototype = {
       var key = input.val();
 
       var span = jQuery('span', li);
-      var ul = jQuery('> ul', li);
+      var label = jQuery('> label', li);
       if(!span.length){
         //If there is a sublist, append count before it.
-        if(ul.length){
-          ul.before(jQuery('<span>'));
+        if(input.length){
+          label.after(jQuery('<span>'));
         } else {
           li.append(jQuery('<span>'));
         }

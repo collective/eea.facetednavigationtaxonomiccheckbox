@@ -80,8 +80,16 @@ EditSchema = Schema((
         schemata="display",
         default=0,
         widget=IntegerWidget(
-            label=_(u"Maximum items"),
-            description=_(u'Number of items visible in widget'),
+            label=_(u"Maximum root items"),
+            description=_(u'Number of items visible of the root of the taxonomy tree'),
+        )
+    ),
+    IntegerField('maxnesteditems',
+        schemata="display",
+        default=0,
+        widget=IntegerWidget(
+            label=_(u"Maximum nested items "),
+            description=_(u'Number of items visible in deeper levels of the taxonomy tree'),
         )
     ),
     BooleanField('sortreversed',
@@ -143,9 +151,23 @@ class Widget(CountableWidget):
 
         return nest_vocab
 
-    def render_partial(self, nested_dict):
+    def render_partial(self, nested_dict={}, depth=0):
         template = ViewPageTemplateFile('partial.pt')
-        return template(self, item=nested_dict)
+        return template(self, item=nested_dict, depth=depth)
+
+    def get_max(self, depth):
+        if depth==0:
+            return int(self.data.get('maxitems', 0) or 0)
+        else:
+            return int(self.data.get('maxnesteditems', 0) or 0)
+
+    def show_collapse(self, vocabulary, depth):
+        """Show collapse buttons or not"""
+        vocab_length = len(vocabulary.keys())
+        max_items = self.get_max(depth)
+        if max_items and vocab_length > max_items:
+            return True
+        return False
 
 
     @property
@@ -224,13 +246,19 @@ class Widget(CountableWidget):
         """
         return '.'.join(string.split('.')[0:-1])
 
-    def taxonomic_html_class(self, string):
+    def taxonomic_html_class(self, string, depth, repeat):
         """
         Gets taxonomic HTML class.
         """
+        class_string = "indent-0"
         if len(string.split('.')) > 1:
-            return "indent-1"
-        return "indent-0"
+            class_string = "indent-1"
+
+        max_items = self.get_max(depth)
+        if max_items and repeat.index() >= max_items:
+            class_string = "hidden {0}".format(class_string)
+
+        return class_string
 
     def taxonomic_html_style(self, string):
         style_attrs = [
@@ -247,6 +275,7 @@ class Widget(CountableWidget):
             for item in allowed:
                 if term.startswith(item):
                     return True
+
 
     def _recursive_keys(self, thedict={}, sequence=[]):
         """Since we made nested dicts, we recusrively need to collect keys"""
