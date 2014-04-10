@@ -9,7 +9,7 @@
                                 css python:view.countable and css + ' faceted-count' or css;
                                 css python:hidezerocount and css + ' faceted-zero-count-hidden' or css;
                                 css python:sortcountable and css + ' faceted-sortcountable' or css;
-                                maxitems python:view.data.get('maxitems', 0) or 0;
+                                max_depth view/max_depth;
                                 operator python:view.operator;
                                 operator_visible python:view.operator_visible;
                                 operator_lable python: 'any' if operator == 'or' else 'all'"
@@ -28,7 +28,7 @@
             <form action="." method="get" tal:define='vocabulary view/vocabulary'>
                 <div tal:replace='structure python: view.render_partial(vocabulary)'/>
             </form>
-            <span style="display:none" tal:content="maxitems" />
+            <span style="display:none" tal:content="max_depth" />
         </tal:facet>
     </fieldset>
 </div>

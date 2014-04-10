@@ -1,9 +1,8 @@
 <ul tal:define='vocabulary options/item;
                 depth options/depth;
-                maxitems python:view.get_max(depth);
-                term_parent nothing; ' 
-    tal:condition='python:vocabulary.keys()'
-    tal:attributes="data-max maxitems;"
+                max_depth view/max_depth;
+                term_parent nothing;' 
+    tal:condition='python:vocabulary.keys() and depth < max_depth'
     i18n:domain="eea">
     <tal:items repeat="term python:vocabulary.keys()">
         <li tal:condition="python:view.allowed(term_id)"
@@ -37,10 +36,10 @@
             <div tal:define='depth python: depth+1' tal:replace='structure python: view.render_partial(vocabulary.get(term), depth)' ></div>
         </li>
     </tal:items>
-    <tal:expand tal:condition="python: view.show_collapse(vocabulary, maxitems)">
+   <!--  <tal:expand tal:condition="python: view.show_collapse(vocabulary, maxitems)">
         <div class="faceted-checkbox-more">
             <a class='more' i18n:translate="" href="#">More</a>
             <a class='less hidden' i18n:translate="" href="#">Less</a>
         </div>
-    </tal:expand>
+    </tal:expand> -->
 </ul>

@@ -76,20 +76,12 @@ EditSchema = Schema((
                         u"as an alternative for vocabulary"),
         )
     ),
-    IntegerField('maxitems',
+    IntegerField('maxdepth',
         schemata="display",
         default=0,
         widget=IntegerWidget(
-            label=_(u"Maximum root items"),
-            description=_(u'Number of items visible of the root of the taxonomy tree'),
-        )
-    ),
-    IntegerField('maxnesteditems',
-        schemata="display",
-        default=0,
-        widget=IntegerWidget(
-            label=_(u"Maximum nested items "),
-            description=_(u'Number of items visible in deeper levels of the taxonomy tree'),
+            label=_(u"Maximum depth"),
+            description=_(u'Number of levels visible of the taxonomy tree'),
         )
     ),
     BooleanField('sortreversed',
@@ -155,20 +147,8 @@ class Widget(CountableWidget):
         template = ViewPageTemplateFile('partial.pt')
         return template(self, item=nested_dict, depth=depth)
 
-    def get_max(self, depth):
-        if depth==0:
-            return int(self.data.get('maxitems', 0) or 0)
-        else:
-            return int(self.data.get('maxnesteditems', 0) or 0)
-
-    def show_collapse(self, vocabulary, depth):
-        """Show collapse buttons or not"""
-        vocab_length = len(vocabulary.keys())
-        max_items = self.get_max(depth)
-        if max_items and vocab_length > max_items:
-            return True
-        return False
-
+    def max_depth(self):
+        return int(self.data.get('maxdepth', 3) or 3)
 
     @property
     def default(self):
@@ -253,10 +233,6 @@ class Widget(CountableWidget):
         class_string = "indent-0"
         if len(string.split('.')) > 1:
             class_string = "indent-1"
-
-        max_items = self.get_max(depth)
-        if max_items and repeat.index() >= max_items:
-            class_string = "hidden {0}".format(class_string)
 
         return class_string
 
